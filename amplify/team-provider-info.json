@@ -1,0 +1,20 @@
+{
+  "dev": {
+    "awscloudformation": {
+      "AuthRoleName": "amplify-muneccim-dev-222851-authRole",
+      "UnauthRoleArn": "arn:aws:iam::561556898088:role/amplify-muneccim-dev-222851-unauthRole",
+      "AuthRoleArn": "arn:aws:iam::561556898088:role/amplify-muneccim-dev-222851-authRole",
+      "Region": "eu-central-1",
+      "DeploymentBucketName": "amplify-muneccim-dev-222851-deployment",
+      "UnauthRoleName": "amplify-muneccim-dev-222851-unauthRole",
+      "StackName": "amplify-muneccim-dev-222851",
+      "StackId": "arn:aws:cloudformation:eu-central-1:561556898088:stack/amplify-muneccim-dev-222851/2b6d8ff0-1687-11ed-b8da-0a3b625a4618",
+      "AmplifyAppId": "d3efvigub7wftg"
+    },
+    "categories": {
+      "auth": {
+        "muneccimfeb6b3a8": {}
+      }
+    }
+  }
+}
