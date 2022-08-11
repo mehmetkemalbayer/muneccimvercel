@@ -1,45 +1,42 @@
-import { SearchIcon } from "@heroicons/react/outline";
-import { MailIcon, PhoneIcon } from "@heroicons/react/solid";
+import { SearchIcon } from '@heroicons/react/outline'
+import { MailIcon, PhoneIcon } from '@heroicons/react/solid'
+import Image from 'next/image'
 
 const people = [
   {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    role: "Admin",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
+    name: 'Jane Cooper',
+    title: 'Regional Paradigm Technician',
+    role: 'Admin',
+    email: 'janecooper@example.com',
+    telephone: '+1-202-555-0170',
+    imageUrl: '/photo.jpg',
   },
   {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    role: "Admin",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
+    name: 'Jane Cooper',
+    title: 'Regional Paradigm Technician',
+    role: 'Admin',
+    email: 'janecooper@example.com',
+    telephone: '+1-202-555-0170',
+    imageUrl: '/photo.jpg',
   },
   {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    role: "Admin",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
+    name: 'Jane Cooper',
+    title: 'Regional Paradigm Technician',
+    role: 'Admin',
+    email: 'janecooper@example.com',
+    telephone: '+1-202-555-0170',
+    imageUrl: '/photo.jpg',
   },
   {
-    name: "Jane Cooper",
-    title: "Regional Paradigm Technician",
-    role: "Admin",
-    email: "janecooper@example.com",
-    telephone: "+1-202-555-0170",
-    imageUrl:
-      "https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=4&w=256&h=256&q=60",
+    name: 'Jane Cooper',
+    title: 'Regional Paradigm Technician',
+    role: 'Admin',
+    email: 'janecooper@example.com',
+    telephone: '+1-202-555-0170',
+    imageUrl: '/photo.jpg',
   },
   // More people...
-];
+]
 
 const MarketsSection = () => {
   return (
@@ -79,10 +76,12 @@ const MarketsSection = () => {
                   {person.title}
                 </p>
               </div>
-              <img
+              <Image
                 className="w-10 h-10 bg-gray-300 rounded-full flex-shrink-0"
                 src={person.imageUrl}
-                alt=""
+                alt={person.name}
+                width={40}
+                height={40}
               />
             </div>
             <div>
@@ -117,7 +116,7 @@ const MarketsSection = () => {
         ))}
       </ul>
     </div>
-  );
-};
+  )
+}
 
-export default MarketsSection;
+export default MarketsSection
