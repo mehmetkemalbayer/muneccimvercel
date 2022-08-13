@@ -1,4 +1,15 @@
-const Summary = ({ title, price, isBordered = false }) => (
+type PriceType = {
+  amount: number
+  currency: string
+}
+
+type SummaryPropsType = {
+  title: string
+  price: PriceType
+  isBordered?: boolean
+}
+
+const Summary = ({ title, price, isBordered = false }: SummaryPropsType) => (
   <div
     className={`flex flex-col pt-4 pb-6 sm:py-4 ${
       isBordered &&
@@ -22,15 +33,15 @@ const PortfolioSummary = () => {
         <dl className="text-left sm:max-w-3xl sm:mx-auto sm:grid sm:grid-cols-3 sm:gap-8">
           <Summary
             title={'Portfolio Value'}
-            price={{ currency: '€', amount: '1.04' }}
+            price={{ currency: '€', amount: 1.04 }}
             isBordered
           />
           <Summary
             title={'Open Positions'}
-            price={{ currency: '€', amount: '1.04' }}
+            price={{ currency: '€', amount: 1.04 }}
             isBordered
           />
-          <Summary title={'Cash'} price={{ currency: '€', amount: '1.04' }} />
+          <Summary title={'Cash'} price={{ currency: '€', amount: 1.04 }} />
         </dl>
       </div>
     </div>
