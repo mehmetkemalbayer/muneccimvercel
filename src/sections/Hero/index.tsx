@@ -1,8 +1,6 @@
-import Header from '../Header'
-
 const HeroSection = () => {
   return (
-    <div className="relative bg-gray-50 overflow-hidden">
+    <div className="relative overflow-hidden">
       <div
         className="hidden sm:block sm:absolute sm:inset-y-0 sm:h-full sm:w-full"
         aria-hidden="true"
@@ -76,8 +74,6 @@ const HeroSection = () => {
       </div>
 
       <div className="relative pt-6 pb-16 sm:pb-24">
-        <Header />
-
         <main className="mt-16 mx-auto max-w-7xl px-4 sm:mt-24">
           <div className="text-center">
             <h1 className="text-4xl tracking-tight font-extrabold text-gray-900 sm:text-5xl md:text-6xl">

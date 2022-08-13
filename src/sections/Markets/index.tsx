@@ -21,7 +21,7 @@ const events = [
 
 const MarketsSection = () => {
   return (
-    <div className="max-w-7xl mx-auto sm:px-6 lg:px-8 py-4">
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4">
       <div className="mt-1 mb-6 relative shadow-sm">
         <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
           <SearchIcon className="h-5 w-5 text-gray-500" aria-hidden="true" />
