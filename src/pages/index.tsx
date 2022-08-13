@@ -1,8 +1,6 @@
-import type { NextPage } from "next";
-import Head from "next/head";
-import Image from "next/image";
-import HeroSection from "../sections/Hero";
-import MarketsSection from "../sections/Markets";
+import type { NextPage } from 'next'
+import HeroSection from '../sections/Hero'
+import MarketsSection from '../sections/Markets'
 
 const Home: NextPage = () => {
   return (
@@ -10,7 +8,7 @@ const Home: NextPage = () => {
       <HeroSection />
       <MarketsSection />
     </>
-  );
-};
+  )
+}
 
-export default Home;
+export default Home
