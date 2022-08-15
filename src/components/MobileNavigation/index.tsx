@@ -31,7 +31,7 @@ const MobileNavigation = ({ user }: MobileNavigationProps) => {
         </Popover.Button>
       </div>
       <Transition.Root as={Fragment}>
-        <div className="lg:hidden">
+        <div className="lg:hidden absolute left-0 top-0 w-full h-full">
           <Transition.Child
             as={Fragment}
             enter="duration-150 ease-out"
