@@ -1,6 +1,8 @@
 import { Tab, RadioGroup } from '@headlessui/react'
 import React, { Fragment, useState } from 'react'
 import { classNames } from '../../shared/utils'
+import ConfirmTransaction from '../ConfirmTransaction'
+import TransactionSuccess from '../TransactionSuccess'
 
 const plans = [
   {
@@ -13,9 +15,14 @@ const plans = [
   },
 ]
 
-const PayButton = ({ children }: React.PropsWithChildren) => (
+type PayButtonProps = {
+  onClick: () => void,
+}
+
+const PayButton = ({ children, onClick }: React.PropsWithChildren<PayButtonProps>) => (
   <button
     type="submit"
+    onClick={onClick}
     className="w-full mt-6 bg-indigo-600 border border-transparent rounded-md shadow-sm py-2 px-4 text-sm font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
   >
     {children}
@@ -41,10 +48,12 @@ const CustomTab = ({ children }: React.PropsWithChildren) => (
 
 type TradeContainerProps = {
   type?: 'buy' | 'sell'
+  showConfirmation: () => void
 }
 
 const TradeContainer = ({
   type = 'buy',
+  showConfirmation
 }: React.PropsWithChildren<TradeContainerProps>) => {
   const [selected, setSelected] = useState(plans[0])
 
@@ -176,12 +185,22 @@ const TradeContainer = ({
         )}
       </dl>
 
-      <PayButton>Sign Up To Trade</PayButton>
+      <PayButton onClick={showConfirmation}>Sign Up To Trade</PayButton>
     </>
   )
 }
 
 const EventDetailSidebar = () => {
+
+  type OrderStatuses = 'INITIAL' | 'WAITING_CONFIRMATION' | 'EDITING' | 'SUCCESS';
+
+  const [orderStatus, setOrderStatus] = useState<OrderStatuses>('INITIAL')
+
+  const showConfirmation = () => setOrderStatus('WAITING_CONFIRMATION');
+  const showEdit = () => setOrderStatus('EDITING');
+  const showSuccess = () => setOrderStatus('SUCCESS');
+  const showInitial = () => setOrderStatus('INITIAL');
+
   return (
     <section
       aria-labelledby="timeline-title"
@@ -195,13 +214,15 @@ const EventDetailSidebar = () => {
           </Tab.List>
           <Tab.Panels>
             <Tab.Panel>
-              <TradeContainer />
+              <TradeContainer showConfirmation={showConfirmation} />
             </Tab.Panel>
             <Tab.Panel>
-              <TradeContainer type="sell" />
+              <TradeContainer type="sell" showConfirmation={showConfirmation} />
             </Tab.Panel>
           </Tab.Panels>
         </Tab.Group>
+        <ConfirmTransaction open={orderStatus === 'WAITING_CONFIRMATION'} onEditOrder={showEdit} onConfirm={showSuccess} onCancel={showInitial} />
+        <TransactionSuccess open={orderStatus === 'SUCCESS'} onCancel={showInitial} />
       </div>
     </section>
   )
