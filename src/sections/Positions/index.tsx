@@ -1,5 +1,5 @@
 import events from '@/mock/eventsMock'
-import EventCard from '../../components/EventCard'
+import EventCard from '@/components/EventCard'
 
 const PositionsSection = () => {
   return (
