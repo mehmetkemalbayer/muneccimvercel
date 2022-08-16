@@ -17,8 +17,8 @@ const ChartContainer = ({ children }: React.PropsWithChildren) => (
 const tickLabelOffset = 10
 
 const accessors = {
-  xAccessor: (d) => new Date(`${d.x}T00:00:00`),
-  yAccessor: (d) => d.y,
+  xAccessor: (d: ChartDataType) => new Date(`${d.x}T00:00:00`),
+  yAccessor: (d: ChartDataType) => d.y,
 }
 
 const Chart = ({ data }: { data: ChartDataType[] }) => {
@@ -64,6 +64,8 @@ const Chart = ({ data }: { data: ChartDataType[] }) => {
             strokeWidth: 0,
           }}
           renderTooltip={({ tooltipData }) => {
+            if (!tooltipData) return
+
             return (
               <div>
                 {Object.entries(tooltipData.datumByKey).map((lineDataArray) => {

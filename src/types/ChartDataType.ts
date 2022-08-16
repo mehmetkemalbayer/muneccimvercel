@@ -1,4 +1,4 @@
 export type ChartDataType = {
-  x: string
-  y: number
+  x?: string
+  y?: number
 }
