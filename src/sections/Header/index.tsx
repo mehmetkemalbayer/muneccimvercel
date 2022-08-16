@@ -8,7 +8,7 @@ import ProfileDropdown from '../../components/ProfileDropdown'
 import MobileNavigation from '../../components/MobileNavigation'
 
 const navigation = [
-  { name: 'Events', href: '/' },
+  { name: 'Events', href: '/events' },
   { name: 'Portfolio', href: '/portfolio' },
 ]
 
@@ -73,6 +73,5 @@ const Header = () => {
     </header>
   )
 }
-
 
 export default Header
