@@ -1,23 +1,6 @@
+import events from '@/mock/eventsMock'
 import { SearchIcon } from '@heroicons/react/outline'
 import EventCard from '../../components/EventCard'
-
-const events = [
-  {
-      "id": "3fa85f64-5717-4562-b3fc-2c963f66afa6",
-      "title": "Will Boris Johnson remain Prime Minister of the United Kingdom through August?",
-      "volume": '$432,160',
-      "expiryDate": "2015-07-20",
-      "category": "Category",
-      "yesPrice": {
-          "amount": 0.53,
-          "currency": "$"
-      },
-      "noPrice": {
-        "amount": 0.47,
-        "currency": "$"
-      }
-  }
-]
 
 const MarketsSection = () => {
   return (
@@ -38,7 +21,7 @@ const MarketsSection = () => {
         role="list"
         className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3"
       >
-        {events.map((event) => (
+        {events.slice(0, 3).map((event) => (
           <EventCard key={event.id} event={event} />
         ))}
       </ul>
