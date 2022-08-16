@@ -1,26 +1,23 @@
+import { EventType } from '@/types/EventType'
 import Link from 'next/link'
 import React from 'react'
-
-type PriceType = {
-  amount: number
-  currency: string
-}
-
-type EventType = {
-  id: string
-  title: string
-  category: string
-  expiryDate: string
-  yesPrice: PriceType
-  noPrice: PriceType
-  volume: string
-}
+import moment from 'moment'
 type EventCardProps = {
   event: EventType
+  isFeatured?: boolean
 }
-const EventCard = ({ event }: EventCardProps) => (
+const EventCard = ({ event, isFeatured = false }: EventCardProps) => (
   <Link href={`events/${event.id}`}>
-    <li className="col-span-1 bg-white rounded-lg shadow hover:shadow-md divide-y divide-gray-200 cursor-pointer">
+    <li
+      className={`col-span-1 bg-white  rounded-lg rounded-tl-none shadow hover:shadow-md cursor-pointer mb-2 relative ${
+        isFeatured ? 'border border-lime-500' : 'divide-y divide-gray-200 '
+      }`}
+    >
+      {isFeatured && (
+        <span className="absolute -top-5 -ml-px  rounded-t flex-shrink-0 inline-block px-2 py-0.5 text-white text-xs font-medium bg-lime-500 ">
+          Featured
+        </span>
+      )}
       <div className="w-full flex flex-col justify-between p-6 space-y-4">
         <h3 className="text-gray-900 text-sm font-medium">
           <span className="flex-shrink-0 inline-block px-2 py-0.5 text-green-800 text-xs font-medium bg-green-100 ">
@@ -28,7 +25,9 @@ const EventCard = ({ event }: EventCardProps) => (
           </span>{' '}
           {event.title}
         </h3>
-        <p className="text-gray-500 text-sm truncate">{event.expiryDate}</p>
+        <p className="text-gray-500 text-sm truncate">
+          Expires at {moment(event.expiryDate).format('DD.MM.YYYY')}
+        </p>
       </div>
       <div>
         <div className="-mt-px flex divide-x divide-gray-200">
