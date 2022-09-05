@@ -1,21 +1,13 @@
 import React, { useState, useMemo, useEffect } from 'react'
-import { scaleTime, scaleLinear } from '@visx/scale'
-import appleStock, { AppleStock } from '@visx/mock-data/lib/mocks/appleStock'
+import { scaleTime } from '@visx/scale'
+import eventPrices from '@/mock/eventPriceMock'
+import { EventPriceType } from '@/types/EventPriceType'
 
 import { LinearGradient } from '@visx/gradient'
 import { max, extent, min } from 'd3-array'
 import AreaChart from './AreaChart'
 import { useTooltip, TooltipWithBounds, defaultStyles } from '@visx/tooltip'
 // Initialize some variables
-const stock = [
-  ...appleStock
-    .slice(1000)
-    .map((x) => ({ ...x, close: x.close * (x.close / 450), type: 'YES' })),
-  ...appleStock
-    .slice(1000)
-    .map((x) => ({ ...x, close: -x.close + 800, type: 'NO' })),
-]
-console.log({ stock })
 const chartSeparation = 30
 
 const GRADIENT_ID = 'brush_gradient'
@@ -24,8 +16,8 @@ export const background = '#584153'
 export const background2 = '#af8baf'
 
 // accessors
-const getDate = (d: AppleStock) => new Date(d.date)
-const getStockValue = (d: AppleStock) => d.close
+const getDate = (d: EventPriceType) => new Date(d.date)
+const getPriceValue = (d: EventPriceType) => d.value
 
 export type BrushProps = {
   width: number
@@ -45,7 +37,7 @@ function BrushChart({
     right: 20,
   },
 }: BrushProps) {
-  const [filteredStock, setFilteredStock] = useState(stock)
+  const [filteredPrices] = useState(eventPrices)
   const [currentValues, setCurrentValues] = useState<{
     yesValue: number | undefined
     noValue: number | undefined
@@ -70,21 +62,20 @@ function BrushChart({
     showTooltip,
     hideTooltip,
   } = useTooltip()
-
-  const onScaleChange = (
+  /*   const onScaleChange = (
     domain: { x0: number; x1: number; y0: number; y1: number } | null
   ) => {
     if (!domain) return
     console.log(domain)
     const { x0, x1, y0, y1 } = domain
-    const stockCopy = stock.filter((s) => {
+    const pricesCopy = eventPrices.filter((s) => {
       const x = getDate(s).getTime()
-      const y = getStockValue(s)
+      const y = getPriceValue(s)
       return x > x0 && x < x1 && y > y0 && y < y1
     })
-    setFilteredStock(stockCopy)
+    setfilteredPrices(pricesCopy)
   }
-
+ */
   const innerHeight = height - margin.top - margin.bottom
   const topChartBottomMargin = compact
     ? chartSeparation / 2
@@ -99,27 +90,26 @@ function BrushChart({
   const dateScale = useMemo(() => {
     return scaleTime<number>({
       range: [0, xMax],
-      domain: extent(filteredStock, getDate) as [Date, Date],
+      domain: extent(filteredPrices, getDate) as [Date, Date],
     })
-  }, [xMax, filteredStock])
-  const stockScale = useMemo(
+  }, [xMax, filteredPrices])
+
+  const priceScale = useMemo(
     () =>
-      scaleLinear<number>({
+      scaleTime<number>({
         range: [yMax, 0],
         domain: [
-          min(filteredStock, getStockValue) || 0,
-          max(filteredStock, getStockValue) || 0,
+          min(filteredPrices, getPriceValue) || 0,
+          max(filteredPrices, getPriceValue) || 0,
         ],
         nice: true,
       }),
-    [yMax, filteredStock]
+    [yMax, filteredPrices]
   )
   useEffect(() => {
     if (!(currentValues?.yesValue && currentValues?.noValue)) {
       setCurrentHighestType('-')
-    }
-
-    if (currentValues.yesValue > currentValues.noValue) {
+    } else if (currentValues?.yesValue > currentValues?.noValue) {
       setCurrentHighestType('YES')
     } else {
       setCurrentHighestType('NO')
@@ -129,6 +119,11 @@ function BrushChart({
   return (
     <div style={{ position: 'relative' }}>
       <div>
+        {currentHighestType === '-' && (
+          <span>
+            <b>{currentHighestType}</b>
+          </span>
+        )}
         {(currentHighestType === 'YES' || currentHighestType === 'NO') && (
           <span>
             <b
@@ -157,14 +152,14 @@ function BrushChart({
 
         <AreaChart
           hideBottomAxis={compact}
-          data={filteredStock}
+          data={filteredPrices}
           width={width}
           margin={{ ...margin }}
           yMax={yMax}
           xScale={dateScale}
-          yScale={stockScale}
+          yScale={priceScale}
           gradientColor={background2}
-          tooltipData={tooltipData}
+          tooltipData={tooltipData as EventPriceType[]}
           tooltipLeft={tooltipLeft}
           tooltipTop={tooltipTop}
           showTooltip={showTooltip}
@@ -173,35 +168,23 @@ function BrushChart({
         />
       </svg>
       {tooltipData && (
-        <TooltipWithBounds
-          key={Math.random()}
-          top={tooltipTop}
-          left={tooltipLeft}
-          style={tooltipStyles}
-        >
-          <p className="flex flex-row justify-center items-center">
-            <div
-              className="rounded-full w-[7px] h-[7px] mr-1"
-              style={{
-                height: '7px',
-                backgroundColor: '#667bf0',
-              }}
-            ></div>
-            {`YES: ${currentValues?.yesValue?.toFixed(4) || '-'}`}
-          </p>
-          <br />
-          {/* <p>{`NO: ${getStockValue(tooltipData[0])}`}</p> */}
-          <p className="flex flex-row justify-center items-center">
-            <div
-              className="rounded-full w-[7px] h-[7px] mr-1"
-              style={{
-                height: '7px',
-                backgroundColor: '#e77490',
-              }}
-            ></div>
-            {`NO: ${currentValues?.noValue?.toFixed(4) || '-'}`}
-          </p>
-        </TooltipWithBounds>
+        <div>
+          <TooltipWithBounds
+            key={Math.random()}
+            top={tooltipTop}
+            left={tooltipLeft}
+            style={tooltipStyles}
+          >
+            <p className="flex flex-row justify-center items-center">
+              {`YES: ${currentValues?.yesValue?.toFixed(4) || '-'}`}
+            </p>
+            <br />
+            {/* <p>{`NO: ${getPriceValue(tooltipData[0])}`}</p> */}
+            <p className="flex flex-row justify-center items-center">
+              {`NO: ${currentValues?.noValue?.toFixed(4) || '-'}`}
+            </p>
+          </TooltipWithBounds>
+        </div>
       )}
     </div>
   )

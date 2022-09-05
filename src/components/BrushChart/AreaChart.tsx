@@ -1,13 +1,11 @@
-import React, { useCallback } from 'react'
+import React from 'react'
 import { Group } from '@visx/group'
 import { LinePath, Line } from '@visx/shape'
 import { AxisLeft, AxisBottom, AxisScale } from '@visx/axis'
 import { LinearGradient } from '@visx/gradient'
-import { curveMonotoneX } from '@visx/curve'
-import { AppleStock } from '@visx/mock-data/lib/mocks/appleStock'
+import { EventPriceType } from '@/types/EventPriceType'
 import { GridRows, GridColumns } from '@visx/grid'
-
-import { useTooltip, TooltipWithBounds, defaultStyles } from '@visx/tooltip'
+import { ScaleTime } from 'd3-scale'
 import { localPoint } from '@visx/event'
 import { bisector } from 'd3-array'
 import { GlyphCircle } from '@visx/glyph'
@@ -30,9 +28,9 @@ const axisLeftTickLabelProps = {
 }
 
 // accessors
-const getDate = (d: AppleStock) => new Date(d.date)
-const getStockValue = (d: AppleStock) => d.close
-const bisectDate = bisector((d: AppleStock) => new Date(d.date)).left
+const getDate = (d: EventPriceType) => new Date(d.date)
+const getPriceValue = (d: EventPriceType) => d.value
+const bisectDate = bisector((d: EventPriceType) => new Date(d.date)).left
 const colors = ['#667bf0', '#e77490']
 export default function AreaChart({
   data,
@@ -54,9 +52,9 @@ export default function AreaChart({
   setCurrentValues,
   children,
 }: {
-  data: AppleStock[]
+  data: EventPriceType[]
   gradientColor: string
-  xScale: AxisScale<number>
+  xScale: ScaleTime<number, number, never>
   yScale: AxisScale<number>
   width: number
   yMax: number
@@ -65,10 +63,18 @@ export default function AreaChart({
   hideLeftAxis?: boolean
   top?: number
   left?: number
-  tooltipData: Record<string, unknown> | undefined
+  tooltipData: EventPriceType[] | undefined
   tooltipLeft: number
   tooltipTop: number
-  showTooltip: ({ tooltipData, tooltipLeft, tooltipTop }) => void
+  showTooltip: ({
+    tooltipData,
+    tooltipLeft,
+    tooltipTop,
+  }: {
+    tooltipData: EventPriceType[] | undefined
+    tooltipLeft: number | undefined
+    tooltipTop: number | undefined
+  }) => void
   hideTooltip: () => void
   setCurrentValues: ({
     yesValue,
@@ -81,7 +87,9 @@ export default function AreaChart({
 }) {
   if (width < 10) return null
 
-  const handleTooltip = (event) => {
+  const handleTooltip = (
+    event: React.TouchEvent<SVGRectElement> | React.MouseEvent<SVGRectElement>
+  ) => {
     const { x } = localPoint(event) || { x: 0 }
     const x0 = xScale.invert(x - margin.left)
 
@@ -90,7 +98,7 @@ export default function AreaChart({
     const d1 = data[index]
     let d = d0
 
-    const getCurrentDateValues = (d: AppleStock) =>
+    const getCurrentDateValues = (d: EventPriceType) =>
       data.filter((item) => item.date === d.date)
 
     if (d1 && getDate(d1)) {
@@ -103,12 +111,13 @@ export default function AreaChart({
     showTooltip({
       tooltipData: getCurrentDateValues(d),
       tooltipLeft: x,
-      tooltipTop: yScale(getStockValue(d)),
+      tooltipTop: yScale(getPriceValue(d)),
     })
+    console.log(tooltipTop)
 
     setCurrentValues({
-      yesValue: tooltipData ? getStockValue(tooltipData[0]) : undefined,
-      noValue: tooltipData ? getStockValue(tooltipData[1]) : undefined,
+      yesValue: tooltipData ? getPriceValue(tooltipData[0]) : undefined,
+      noValue: tooltipData ? getPriceValue(tooltipData[1]) : undefined,
     })
   }
 
@@ -136,19 +145,19 @@ export default function AreaChart({
           stroke="#e0e0e0"
           strokeDasharray="4"
         />
-        <LinePath<AppleStock>
+        <LinePath<EventPriceType>
           stroke={'#667bf0'}
           strokeWidth={2}
           data={data.filter((d) => d.type === 'YES')}
           x={(d) => xScale(getDate(d)) || 0}
-          y={(d) => yScale(getStockValue(d)) || 0}
+          y={(d) => yScale(getPriceValue(d)) || 0}
         />
-        <LinePath<AppleStock>
+        <LinePath<EventPriceType>
           stroke={'#e77490'}
           strokeWidth={2}
           data={data.filter((d) => d.type === 'NO')}
           x={(d) => xScale(getDate(d)) || 0}
-          y={(d) => yScale(getStockValue(d)) || 0}
+          y={(d) => yScale(getPriceValue(d)) || 0}
         />
 
         {!hideBottomAxis && (
@@ -187,7 +196,7 @@ export default function AreaChart({
             <g key={i}>
               <GlyphCircle
                 left={tooltipLeft - margin.left}
-                top={yScale(d.close) + 2}
+                top={(yScale(d.value) || 0) + 2}
                 size={110}
                 fill={colors[i]}
                 stroke={'white'}
