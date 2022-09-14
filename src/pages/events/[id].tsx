@@ -2,8 +2,7 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import EventDetailSidebar from '../../sections/EventDetailSidebar'
 
-import ParentSize from '@visx/responsive/lib/components/ParentSize'
-import BrushChart from '@/components/BrushChart'
+import { PriceHistory } from 'container/PriceHistory'
 
 const EventDetail = () => {
   const router = useRouter()
@@ -51,14 +50,11 @@ const EventDetail = () => {
           <section aria-labelledby="applicant-information-title">
             <div className="bg-white shadow sm:rounded-lg">
               <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
-                <div style={{ width: '100%', height: '400px' }}>
-                  <ParentSize>
-                    {({ width, height }) => (
-                      <BrushChart width={width} height={height} />
-                    )}
-                  </ParentSize>
-                </div>
-
+                <dl className="grid">
+                  <div className="sm:col-span-1 mb-5">
+                    {id && <PriceHistory eventId={id.toString()} />}
+                  </div>
+                </dl>
                 <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3">
                   <div className="sm:col-span-1">
                     <dt className="text-sm font-medium text-gray-500">
