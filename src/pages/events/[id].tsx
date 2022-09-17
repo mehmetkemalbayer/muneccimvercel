@@ -2,7 +2,7 @@ import { useRouter } from 'next/router'
 import Image from 'next/image'
 import EventDetailSidebar from '../../sections/EventDetailSidebar'
 
-
+import { PriceHistory } from 'container/PriceHistory'
 
 const EventDetail = () => {
   const router = useRouter()
@@ -28,7 +28,8 @@ const EventDetail = () => {
           </div>
           <div>
             <h1 className="text-2xl font-bold text-gray-900">
-             {id} Which party will control the U.S. Senate after the 2022 election?
+              {id} Which party will control the U.S. Senate after the 2022
+              election?
             </h1>
             <span className="mt-2 inline-flex items-center px-2.5 py-0.5 rounded-md text-sm font-medium bg-indigo-100 text-indigo-800">
               <svg
@@ -49,6 +50,11 @@ const EventDetail = () => {
           <section aria-labelledby="applicant-information-title">
             <div className="bg-white shadow sm:rounded-lg">
               <div className="border-t border-gray-200 px-4 py-5 sm:px-6">
+                <dl className="grid">
+                  <div className="sm:col-span-1 mb-5">
+                    {id && <PriceHistory eventId={id.toString()} />}
+                  </div>
+                </dl>
                 <dl className="grid grid-cols-1 gap-x-4 gap-y-8 sm:grid-cols-3">
                   <div className="sm:col-span-1">
                     <dt className="text-sm font-medium text-gray-500">
@@ -107,7 +113,6 @@ const EventDetail = () => {
           </section>
         </div>
         <EventDetailSidebar />
-
       </div>
     </main>
   )
