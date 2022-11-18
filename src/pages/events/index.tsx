@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { EventModel } from '@/types/EventType'
 import EventCard from '@/components/EventCard'
 import events from '@/mock/eventsMock'
 import { AnimatedAxis } from '@visx/xychart'
@@ -28,7 +29,7 @@ const Events = () => {
         role="list"
         className="grid grid-cols-1 gap-6 sm:grid-cols-2 mt-7 lg:grid-cols-3"
       >
-        {data.map((event, i) => (
+        {data.map((event) => (
           <EventCard key={event['id']} event={event} isFeatured={false} />
         ))}
 

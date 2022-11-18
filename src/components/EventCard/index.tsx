@@ -8,7 +8,7 @@ type EventCardProps = {
 }
 const EventCard = ({ event, isFeatured = false }: EventCardProps) => {
 
-  const [lang, setLang] = useState('tr');
+  const [lang] = useState('tr');
 
   const getTotalVolume = () => {
     return event.volume?.yesBuyVolume + event.volume?.yesSellVolume + event.volume?.noBuyVolume + event.volume?.noSellVolume;
