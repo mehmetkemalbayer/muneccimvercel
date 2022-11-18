@@ -1,10 +1,14 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { SearchIcon } from '@heroicons/react/outline'
 import EventCard from '../../components/EventCard'
 import axios from 'axios'
 
 const MarketsSection = () => {
   const [events, setEvents] = useState([]);
+
+  useEffect(() => {
+    refreshData();
+  }, []);
 
   const refreshData = () => {
     axios.get('https://0lwihue84b.execute-api.eu-central-1.amazonaws.com/client/v1/events').then(response => {
