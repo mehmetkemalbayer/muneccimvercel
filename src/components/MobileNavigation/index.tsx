@@ -24,9 +24,7 @@ const MobileNavigation = ({ user }: MobileNavigationProps) => {
 
   const signOut = (e: any) => {
     e.preventDefault();
-    Auth.signOut().then(res => {
-      router.push("login")
-    })
+    Auth.signOut()
   }
 
   const userNavigation = [

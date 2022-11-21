@@ -28,6 +28,8 @@ function MyApp({ Component, pageProps }: AppProps) {
     const authListener = (data: any) => {
       if (data.payload.event == "signIn") {
         router.push("/")
+      } else if (data.payload.event == "signOut") {
+        router.push("/login")
       }
     }
 
