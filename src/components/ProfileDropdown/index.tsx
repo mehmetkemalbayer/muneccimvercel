@@ -8,13 +8,9 @@ import { useRouter } from 'next/router'
 
 const ProfileDropdown = () => {
 
-  const router = useRouter()
-
   const signOut = (e: any) => {
     e.preventDefault();
-    Auth.signOut().then(res => {
-      router.push("login")
-    });
+    Auth.signOut();
   }
 
   const userNavigation = [

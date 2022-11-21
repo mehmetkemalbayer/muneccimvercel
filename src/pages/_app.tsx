@@ -4,7 +4,7 @@ import '../styles/globals.css'
 import '@aws-amplify/ui-react/styles.css'
 import type { AppProps } from 'next/app'
 import Footer from '../sections/Footer'
-import { Amplify, Auth } from 'aws-amplify'
+import { Amplify, Auth, Hub } from 'aws-amplify'
 import config from '../aws-exports'
 import { Authenticator } from '@aws-amplify/ui-react'
 import Header from '../sections/Header'
@@ -24,6 +24,17 @@ function MyApp({ Component, pageProps }: AppProps) {
     }).catch(() => {
       router.push("/login")
     });
+
+    const authListener = (data: any) => {
+      if (data.payload.event == "signIn") {
+        router.push("/")
+      } else if (data.payload.event == "signOut") {
+        router.push("/login")
+      }
+    }
+
+    Hub.listen('auth', authListener)
+    return () => Hub.remove('auth', authListener);
   }, [])
 
   return (
