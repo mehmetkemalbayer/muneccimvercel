@@ -1,14 +1,11 @@
-import { Fragment } from 'react'
+import React, { Fragment } from 'react'
 import { Popover, Transition } from '@headlessui/react'
 import { MenuIcon, XIcon } from '@heroicons/react/outline'
 import Avatar from '../../components/Avatar'
+import { Auth } from 'aws-amplify'
 import Link from 'next/link'
+import { useRouter } from 'next/router'
 
-const userNavigation = [
-  { name: 'Your Profile', href: '#' },
-  { name: 'Settings', href: '#' },
-  { name: 'Sign out', href: '#' },
-]
 
 type UserType = {
   username?: string
@@ -22,6 +19,22 @@ type MobileNavigationProps = {
 }
 
 const MobileNavigation = ({ user }: MobileNavigationProps) => {
+
+  const router = useRouter()
+
+  const signOut = (e: any) => {
+    e.preventDefault();
+    Auth.signOut().then(res => {
+      router.push("login")
+    })
+  }
+
+  const userNavigation = [
+    { name: 'Your Profile', href: '#' },
+    { name: 'Settings', href: '#' },
+    { name: 'Sign out', href: '#', onClick: signOut },
+  ]
+
   return (
     <>
       <div className="flex items-center lg:hidden">
@@ -97,6 +110,7 @@ const MobileNavigation = ({ user }: MobileNavigationProps) => {
                   <div className="mt-3 px-2 space-y-1">
                     {userNavigation.map((item) => (
                       <a
+                        onClick={item.onClick}
                         key={item.name}
                         href={item.href}
                         className="block rounded-md px-3 py-2 text-base text-gray-900 font-medium hover:bg-gray-100 hover:text-gray-800"
