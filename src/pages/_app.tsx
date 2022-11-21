@@ -15,8 +15,6 @@ Amplify.configure({
 })
 
 function MyApp({ Component, pageProps }: AppProps) {
-
-  const [user, setUser] = useState(null);
   const router = useRouter()
 
   useEffect(() => {
