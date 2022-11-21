@@ -1,7 +1,7 @@
-import { useEffect } from 'react'
+import { useEffect, useState } from 'react'
 import { Authenticator } from '@aws-amplify/ui-react'
-import { Auth } from 'aws-amplify'
-import { useRouter } from 'next/router'
+import { Auth, Hub } from 'aws-amplify'
+import { Router, useRouter } from 'next/router'
 
 const authenticatorComponents = {
   Header: () => (
@@ -15,17 +15,22 @@ const Login = () => {
   const router = useRouter()
 
 
+
   useEffect(() => {
-    //TODO: burada logout olacak. Auth.currentAuthenticatedUser() ile olmadi!!!
+    // Hub.listen('auth', listener)
+    // return () => Hub.remove('auth', listener);
   }, [])
+
 
   return (
     <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <Authenticator components={authenticatorComponents}>
-
+        {({ user, signOut }) => (
+          <main>
+          </main>
+        )}
       </Authenticator>
     </div>
   )
 }
-
 export default Login
