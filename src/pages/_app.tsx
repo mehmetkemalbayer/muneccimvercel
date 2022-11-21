@@ -19,7 +19,9 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   useEffect(() => {
     Auth.currentAuthenticatedUser().then(() => {
+      alert('auth')
     }).catch(() => {
+      alert('error')
       router.push("/login")
     });
 
