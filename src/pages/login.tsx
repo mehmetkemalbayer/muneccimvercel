@@ -1,4 +1,7 @@
+import { useEffect, useState } from 'react'
 import { Authenticator } from '@aws-amplify/ui-react'
+import { Auth, Hub } from 'aws-amplify'
+import { Router, useRouter } from 'next/router'
 
 const authenticatorComponents = {
   Header: () => (
@@ -9,18 +12,25 @@ const authenticatorComponents = {
 }
 
 const Login = () => {
+  const router = useRouter()
+
+
+
+  useEffect(() => {
+    // Hub.listen('auth', listener)
+    // return () => Hub.remove('auth', listener);
+  }, [])
+
+
   return (
     <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
       <Authenticator components={authenticatorComponents}>
-        {({ signOut, user }) => (
+        {({ user, signOut }) => (
           <main>
-            <h1>Hello {user?.username}</h1>
-            <button onClick={signOut}>Sign out</button>
           </main>
         )}
       </Authenticator>
     </div>
   )
 }
-
 export default Login
