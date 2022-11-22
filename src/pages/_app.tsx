@@ -20,8 +20,11 @@ function MyApp({ Component, pageProps }: AppProps) {
   const router = useRouter()
 
   useEffect(() => {
-    Auth.currentAuthenticatedUser().then(() => {
+    console.log("CHECKING USER");
+    Auth.currentAuthenticatedUser().then((user) => {
+      console.log(JSON.stringify(user));
     }).catch(() => {
+      console.log("SIGNED OUT");
       router.push("/login")
     });
 
